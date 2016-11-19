@@ -1,0 +1,33 @@
+<div ng-app="myApp" ng-controller="myCtrl"> 
+   Name: <input type="text" ng-model="user1.name">
+    Age: <input type="number" ng-model="user1.age">
+<p>Today's welcome message is:</p>
+User 1: <pre>{{user1 | json}}</pre>
+<hr>
+<h1>{{master[0]}}</h1>
+<h1>{{myWelcome}}</h1>
+
+</div>
+
+<p>The $http service requests a page on the server, and the response is set as the value of the "myWelcome" variable.</p>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+$scope.user1 = {};  
+
+var values = {name: 'misko', gender: 'male'};
+var log = [];
+angular.forEach(values, function(value, key) {
+  this.push(key + ': ' + value);
+}, log);
+expect(log).toEqual(['name: misko', 'gender: male']);
+
+$scope.master= angular.copy(log);
+
+$http.get("welcome.htm").then(function (response) {
+      $scope.myWelcome = response.data;
+   
+  });
+});
+</script>
